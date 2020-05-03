@@ -1,4 +1,4 @@
-# Node.JS_Launcher
+# Node.JS Launcher
 
 Node.JS Launcher for Windows.
 
