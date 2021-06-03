@@ -52,6 +52,8 @@ http.createServer(function(request,response)
         console.log("Status Code:",response.statusCode);
         console.log("Status Message:",'"'+response.statusMessage+'"');
     }
-}).listen(port);
-console.log("Origin:",port==80?"http://localhost/":"http://localhost:"+port+"/");
-console.log("Root Path:",'"'+rootPath+'"');
+}).listen(port,()=>
+{
+    console.log("Origin:",port==80?"http://localhost/":"http://localhost:"+port+"/");
+    console.log("Root Path:",'"'+rootPath+'"');
+});
