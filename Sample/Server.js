@@ -28,15 +28,15 @@ http.createServer(function(request,response)
         if(fs.statSync(rootPath+filePath).isDirectory())filePath+="/index.html";
         if(fs.statSync(rootPath+filePath).isFile())
         {
-            const contentType=mimeType[filePath.slice(filePath.lastIndexOf(".")).toLowerCase()]||"application/octet-stream";
-            response.setHeader("Content-Type",contentType);
+            const contentType=mimeType[filePath.slice(filePath.lastIndexOf(".")).toLowerCase()];
+            if(contentType)response.setHeader("Content-Type",contentType);
             response.writeHead(200);
             fs.createReadStream(rootPath+filePath).pipe(response);
             console.log("-".repeat(64));
             console.log("URL Path:",'"'+urlPath+'"');
             if(filePath!=urlPath)console.log("File Path:",'"'+filePath+'"');
             if(queryString)console.log("Query String:",'"'+queryString+'"');
-            console.log("Content-Type:",'"'+contentType+'"');
+            if(contentType)console.log("Content-Type:",'"'+contentType+'"');
         }
         else throw null;
     }
