@@ -4,8 +4,8 @@ const http=require("http");
 const path=require("path");
 const defaultMIMEType="";
 const port=+process.argv[2]||80;
-const rootPath=process.argv[3]||".";
 const indexFiles=["index.htm","index.html"];
+const rootPath=path.normalize(process.argv[3]||".");
 const mimeTypes=
 {
     ".css":"text/css",
@@ -22,16 +22,17 @@ const mimeTypes=
 }
 http.createServer(function(request,response)
 {
-    const urlPath=decodeURI(request.url);
-    let contentType,pathName=urlPath,queryString="",sliceIndex=urlPath.indexOf("?");
-    if(sliceIndex>=0)
+    const urlPath=decodeURIComponent(request.url);
+    let contentType,pathName,queryString="",sliceIndex=urlPath.indexOf("?");
+    if(sliceIndex<0)pathName=path.posix.normalize(urlPath);
+    else
     {
-        pathName=urlPath.slice(0,sliceIndex);
         queryString=urlPath.slice(sliceIndex+1);
+        pathName=path.posix.normalize(urlPath.slice(0,sliceIndex));
     }
     try
     {
-        const filePath=rootPath+pathName;
+        const filePath=path.join(rootPath,pathName);
         if(!fs.existsSync(filePath))throw false;
         else
         {
@@ -46,19 +47,19 @@ http.createServer(function(request,response)
                 throws=false;
                 for(const indexFile of indexFiles)
                 {
-                    if(fs.existsSync(filePath+"/"+indexFile))appendPaths.push("/"+indexFile);
+                    if(fs.existsSync(path.join(filePath,indexFile)))appendPaths.push(indexFile);
                 }
             }
             for(let i=0;throws!=null&&i<appendPaths.length;i++)
             {
-                if(fs.statSync(filePath+appendPaths[i]).isFile())
+                if(fs.statSync(path.join(filePath,appendPaths[i])).isFile())
                 {
                     throws=null;
-                    pathName+=appendPaths[i];
+                    pathName=path.posix.join(pathName,appendPaths[i]);
                     contentType=mimeTypes[path.extname(pathName).toLowerCase()]||defaultMIMEType;
                     if(contentType)response.setHeader("Content-Type",contentType);
                     response.writeHead(200,"OK");
-                    fs.createReadStream(rootPath+pathName).pipe(response);
+                    fs.createReadStream(path.join(rootPath,pathName)).pipe(response);
                 }
             }
             if(throws!=null)throw throws;
