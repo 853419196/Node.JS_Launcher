@@ -58,7 +58,7 @@ http.createServer(function(request,response)
                     pathName=path.posix.join(pathName,appendPaths[i]);
                     contentType=mimeTypes[path.extname(pathName).toLowerCase()]||defaultMIMEType;
                     if(contentType)response.setHeader("Content-Type",contentType);
-                    response.writeHead(200,"OK");
+                    response.writeHead(200,http.STATUS_CODES["200"]);
                     fs.createReadStream(path.join(rootPath,pathName)).pipe(response);
                 }
             }
@@ -67,8 +67,8 @@ http.createServer(function(request,response)
     }
     catch(error)
     {
-        if(!error)response.writeHead(404,"Not Found");
-        else response.writeHead(500,"Internal Server Error");
+        if(!error)response.writeHead(404,http.STATUS_CODES["404"]);
+        else response.writeHead(500,http.STATUS_CODES["500"]);
         response.end();
     }
     finally
