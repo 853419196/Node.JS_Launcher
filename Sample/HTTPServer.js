@@ -58,7 +58,7 @@ http.createServer(function(request,response)
                     contentType=mimeTypes[path.extname(pathName).toLowerCase()]||defaultMIMEType;
                     if(contentType)response.setHeader("Content-Type",contentType);
                     response.writeHead(200,"OK");
-                    fs.createReadStream(filePath+appendPaths[i]).pipe(response);
+                    fs.createReadStream(rootPath+pathName).pipe(response);
                 }
             }
             if(throws!=null)throw throws;
