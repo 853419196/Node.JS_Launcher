@@ -80,7 +80,6 @@ http.createServer(function(request,response)
         if(contentType)console.log("Content-Type:",'"'+contentType+'"');
         console.log("Status Code:",response.statusCode);
         console.log("Status Message:",'"'+response.statusMessage+'"');
-console.log(path.resolve(path.join(rootPath,pathName)));
     }
 }).listen(port,()=>
 {
