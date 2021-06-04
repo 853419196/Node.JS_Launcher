@@ -5,7 +5,7 @@ const path=require("path");
 const defaultMIMEType="";
 const indexFiles=["index.htm","index.html"];
 const port=+process.argv[2]||+process.argv[3]||80;
-const rootPath=path.join((+process.argv[2]?process.argv[3]:process.argv[2])||".",path.sep);
+const rootPath=path.resolve(path.join((+process.argv[2]?process.argv[3]:process.argv[2])||".",path.sep));
 const mimeTypes=
 {
     ".css":"text/css",
