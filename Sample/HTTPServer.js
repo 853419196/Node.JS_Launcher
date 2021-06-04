@@ -49,16 +49,16 @@ http.createServer(function(request,response)
                     if(fs.existsSync(filePath+"/"+indexFile))appendPaths.push("/"+indexFile);
                 }
             }
-            for(const appendPath of appendPaths)
+            for(let i=0;throws!=null&&i<appendPaths.length;i++)
             {
-                if(fs.statSync(filePath+appendPath).isFile())
+                if(fs.statSync(filePath+appendPaths[i]).isFile())
                 {
                     throws=null;
-                    pathName+=appendPath;
+                    pathName+=appendPaths[i];
                     contentType=mimeTypes[path.extname(pathName).toLowerCase()]||defaultMIMEType;
                     if(contentType)response.setHeader("Content-Type",contentType);
                     response.writeHead(200,"OK");
-                    fs.createReadStream(filePath+appendPath).pipe(response);
+                    fs.createReadStream(filePath+appendPaths[i]).pipe(response);
                 }
             }
             if(throws!=null)throw throws;
