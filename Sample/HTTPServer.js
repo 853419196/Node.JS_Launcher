@@ -66,8 +66,8 @@ http.createServer(function(request,response)
     }
     catch(error)
     {
-        if(error)response.writeHead(500,"Internal Server Error");
-        else response.writeHead(404,"Not Found");
+        if(!error)response.writeHead(404,"Not Found");
+        else response.writeHead(500,"Internal Server Error");
         response.end();
     }
     finally
