@@ -3,9 +3,9 @@ const fs=require("fs");
 const http=require("http");
 const path=require("path");
 const defaultMIMEType="";
-const port=+process.argv[2]||80;
 const indexFiles=["index.htm","index.html"];
-const rootPath=path.normalize(process.argv[3]||".");
+const port=+process.argv[2]||+process.argv[3]||80;
+const rootPath=path.join((+process.argv[2]?process.argv[3]:process.argv[2])||".",path.sep);
 const mimeTypes=
 {
     ".css":"text/css",
@@ -80,6 +80,7 @@ http.createServer(function(request,response)
         if(contentType)console.log("Content-Type:",'"'+contentType+'"');
         console.log("Status Code:",response.statusCode);
         console.log("Status Message:",'"'+response.statusMessage+'"');
+console.log(path.resolve(path.join(rootPath,pathName)));
     }
 }).listen(port,()=>
 {
