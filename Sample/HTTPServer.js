@@ -1,8 +1,10 @@
 "use strict";
 const fs=require("fs");
 const http=require("http");
+const path=require("path");
 const port=+process.argv[2]||80;
 const rootPath=process.argv[3]||".";
+const indexFiles=["index.htm","index.html"];
 const mimeType=
 {
     ".css":"text/css",
@@ -14,39 +16,64 @@ const mimeType=
     ".pdf":"application/pdf",
     ".svg":"image/svg+xml",
     ".txt":"text/plain",
+    ".wasm":"application/wasm",
     ".xml":"text/xml"
 }
 http.createServer(function(request,response)
 {
-    let contentType;
     const urlPath=decodeURI(request.url);
-    let sliceIndex=urlPath.indexOf("?");
-    if(sliceIndex<0)sliceIndex=urlPath.length;
-    let filePath=urlPath.slice(0,sliceIndex);
-    const queryString=urlPath.slice(sliceIndex+1);
+    let contentType,pathName=urlPath,queryString="",sliceIndex=urlPath.indexOf("?");
+    if(sliceIndex>=0)
+    {
+        pathName=urlPath.slice(0,sliceIndex);
+        queryString=urlPath.slice(sliceIndex+1);
+    }
     try
     {
-        if(fs.statSync(rootPath+filePath).isDirectory())filePath+="/index.html";
-        if(fs.statSync(rootPath+filePath).isFile())
+        const filePath=rootPath+pathName;
+        if(!fs.existsSync(filePath))throw false;
+        else
         {
-            contentType=mimeType[filePath.slice(filePath.lastIndexOf(".")).toLowerCase()];
-            if(contentType)response.setHeader("Content-Type",contentType);
-            response.writeHead(200,"OK");
-            fs.createReadStream(rootPath+filePath).pipe(response);
+            let throws,appendPaths=[];
+            if(!fs.statSync(filePath).isDirectory())
+            {
+                throws=true;
+                appendPaths.push("");
+            }
+            else
+            {
+                throws=false;
+                for(const indexFile of indexFiles)
+                {
+                    if(fs.existsSync(filePath+"/"+indexFile))appendPaths.push("/"+indexFile);
+                }
+            }
+            for(const appendPath of appendPaths)
+            {
+                if(fs.statSync(filePath+appendPath).isFile())
+                {
+                    throws=null;
+                    pathName+=appendPath;
+                    contentType=mimeType[path.extname(pathName).toLowerCase()];
+                    if(contentType)response.setHeader("Content-Type",contentType);
+                    response.writeHead(200,"OK");
+                    fs.createReadStream(filePath+appendPath).pipe(response);
+                }
+            }
+            if(throws!=null)throw throws;
         }
-        else throw null;
     }
     catch(error)
     {
-        if(error)response.writeHead(404,"Not Found");
-        else response.writeHead(500,"Internal Server Error");
+        if(error)response.writeHead(500,"Internal Server Error");
+        else response.writeHead(404,"Not Found");
         response.end();
     }
     finally
     {
         console.log("-".repeat(64));
         console.log("URL Path:",'"'+urlPath+'"');
-        if(filePath!=urlPath)console.log("File Path:",'"'+filePath+'"');
+        if(pathName!=urlPath)console.log("Path Name:",'"'+pathName+'"');
         if(queryString)console.log("Query String:",'"'+queryString+'"');
         if(contentType)console.log("Content-Type:",'"'+contentType+'"');
         console.log("Status Code:",response.statusCode);
