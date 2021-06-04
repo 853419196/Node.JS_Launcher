@@ -2,10 +2,11 @@
 const fs=require("fs");
 const http=require("http");
 const path=require("path");
+const defaultMIMEType="";
 const port=+process.argv[2]||80;
 const rootPath=process.argv[3]||".";
 const indexFiles=["index.htm","index.html"];
-const mimeType=
+const mimeTypes=
 {
     ".css":"text/css",
     ".csv":"text/csv",
@@ -54,7 +55,7 @@ http.createServer(function(request,response)
                 {
                     throws=null;
                     pathName+=appendPath;
-                    contentType=mimeType[path.extname(pathName).toLowerCase()];
+                    contentType=mimeTypes[path.extname(pathName).toLowerCase()]||defaultMIMEType;
                     if(contentType)response.setHeader("Content-Type",contentType);
                     response.writeHead(200,"OK");
                     fs.createReadStream(filePath+appendPath).pipe(response);
