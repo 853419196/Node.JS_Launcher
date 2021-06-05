@@ -20,7 +20,7 @@ const mimeTypes=
     ".wasm":"application/wasm",
     ".vtt":"text/vtt",
     ".xml":"text/xml"
-}
+};
 http.createServer(function(request,response)
 {
     const urlPath=decodeURIComponent(request.url);
