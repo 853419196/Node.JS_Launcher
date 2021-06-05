@@ -25,11 +25,11 @@ http.createServer(function(request,response)
 {
     const urlPath=decodeURIComponent(request.url);
     let contentType,pathName,queryString="",sliceIndex=urlPath.indexOf("?");
-    if(sliceIndex<0)pathName=path.posix.normalize(urlPath);
+    if(sliceIndex<0)pathName=path.posix.normalize(urlPath.replace(/\.\./g,""));
     else
     {
         queryString=urlPath.slice(sliceIndex+1);
-        pathName=path.posix.normalize(urlPath.slice(0,sliceIndex));
+        pathName=path.posix.normalize(urlPath.slice(0,sliceIndex).replace(/\.\./g,""));
     }
     try
     {
