@@ -18,6 +18,7 @@ const mimeTypes=
     ".svg":"image/svg+xml",
     ".txt":"text/plain",
     ".wasm":"application/wasm",
+    ".vtt":"text/vtt",
     ".xml":"text/xml"
 }
 http.createServer(function(request,response)
