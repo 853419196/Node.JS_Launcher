@@ -37,15 +37,11 @@ http.createServer(function(request,response)
         if(!fs.existsSync(filePath))throw false;
         else
         {
-            let throws,appendPaths=[];
-            if(!fs.statSync(filePath).isDirectory())
-            {
-                throws=true;
-                appendPaths.push("");
-            }
-            else
+            let throws=true,appendPaths=[""];
+            if(fs.statSync(filePath).isDirectory())
             {
                 throws=false;
+                appendPaths.pop();
                 for(const indexFile of indexFiles)
                 {
                     if(fs.existsSync(path.join(filePath,indexFile)))appendPaths.push(indexFile);
