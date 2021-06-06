@@ -23,13 +23,13 @@ const mimeTypes=
 };
 http.createServer(function(request,response)
 {
-    const urlPath=decodeURIComponent(request.url);
+    const urlPath=decodeURI(request.url);
     let contentType,pathName,queryString="",sliceIndex=urlPath.indexOf("?");
-    if(sliceIndex<0)pathName=path.posix.resolve("/",urlPath);
+    if(sliceIndex<0)pathName=path.posix.resolve(path.posix.sep,decodeURIComponent(urlPath));
     else
     {
-        queryString=urlPath.slice(sliceIndex+1);
-        pathName=path.posix.resolve("/",urlPath.slice(0,sliceIndex));
+        queryString=decodeURIComponent(urlPath.slice(sliceIndex+1));
+        pathName=path.posix.resolve(path.posix.sep,decodeURIComponent(urlPath.slice(0,sliceIndex)));
     }
     try
     {
