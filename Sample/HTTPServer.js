@@ -47,16 +47,17 @@ http.createServer(function(request,response)
                     if(fs.existsSync(path.join(filePath,indexFile)))appendPaths.push(indexFile);
                 }
             }
-            for(let i=0;throws!=null&&i<appendPaths.length;i++)
+            for(const appendPath of appendPaths)
             {
-                if(fs.statSync(path.join(filePath,appendPaths[i])).isFile())
+                if(fs.statSync(path.join(filePath,appendPath)).isFile())
                 {
                     throws=null;
-                    pathName=path.posix.join(pathName,appendPaths[i]);
+                    pathName=path.posix.join(pathName,appendPath);
                     contentType=mimeTypes[path.extname(pathName).toLowerCase()]||defaultMIMEType;
                     if(contentType)response.setHeader("Content-Type",contentType);
                     response.writeHead(200,http.STATUS_CODES["200"]);
                     fs.createReadStream(path.join(rootPath,pathName)).pipe(response);
+                    break;
                 }
             }
             if(throws!=null)throw throws;
