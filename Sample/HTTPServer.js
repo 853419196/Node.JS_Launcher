@@ -33,38 +33,31 @@ http.createServer(function(request,response)
     }
     try
     {
-        const filePath=path.join(rootPath,pathName);
-        if(!fs.existsSync(filePath))throw false;
+        const basePath=path.join(rootPath,pathName);
+        if(!fs.existsSync(basePath))throw false;
         else
         {
-            let throws=true,appendPaths=[""];
-            if(fs.statSync(filePath).isDirectory())
+            let appendPath,appendPaths=[""],throws=true;
+            if(fs.statSync(basePath).isDirectory())
             {
                 throws=false;
-                appendPaths.pop();
-                for(const indexFile of indexFiles)
-                {
-                    if(fs.existsSync(path.join(filePath,indexFile)))appendPaths.push(indexFile);
-                }
+                appendPaths=indexFiles.filter(indexFile=>fs.existsSync(path.join(basePath,indexFile)));
             }
-            for(const appendPath of appendPaths)
+            if((appendPath=appendPaths.find(appendPath=>fs.statSync(path.join(basePath,appendPath)).isFile()))!=null)
             {
-                if(fs.statSync(path.join(filePath,appendPath)).isFile())
-                {
-                    throws=null;
-                    pathName=path.posix.join(pathName,appendPath);
-                    contentType=mimeTypes[path.extname(pathName).toLowerCase()]||defaultMIMEType;
-                    if(contentType)response.setHeader("Content-Type",contentType);
-                    response.writeHead(200,http.STATUS_CODES["200"]);
-                    fs.createReadStream(path.join(rootPath,pathName)).pipe(response);
-                    break;
-                }
+                throws=null;
+                pathName=path.posix.join(pathName,appendPath);
+                contentType=mimeTypes[path.extname(pathName).toLowerCase()]||defaultMIMEType;
+                if(contentType)response.setHeader("Content-Type",contentType);
+                response.writeHead(200,http.STATUS_CODES["200"]);
+                fs.createReadStream(path.join(rootPath,pathName)).pipe(response);
             }
             if(throws!=null)throw throws;
         }
     }
     catch(error)
     {
+console.log(error);
         if(!error)response.writeHead(404,http.STATUS_CODES["404"]);
         else response.writeHead(500,http.STATUS_CODES["500"]);
         response.end();
