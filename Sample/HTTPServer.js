@@ -57,7 +57,6 @@ http.createServer(function(request,response)
     }
     catch(error)
     {
-console.log(error);
         if(!error)response.writeHead(404,http.STATUS_CODES["404"]);
         else response.writeHead(500,http.STATUS_CODES["500"]);
         response.end();
