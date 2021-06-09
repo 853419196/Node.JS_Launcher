@@ -28,7 +28,7 @@ http.createServer(function(request,response)
     if(sliceIndex<0)pathName=path.posix.resolve(path.posix.sep,decodeURIComponent(urlPath));
     else
     {
-        queryString=decodeURIComponent(urlPath.slice(sliceIndex+1));
+        queryString=urlPath.slice(sliceIndex+1);
         pathName=path.posix.resolve(path.posix.sep,decodeURIComponent(urlPath.slice(0,sliceIndex)));
     }
     try
