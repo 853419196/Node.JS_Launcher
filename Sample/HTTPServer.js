@@ -21,7 +21,7 @@ const mimeTypes=
     ".vtt":"text/vtt",
     ".xml":"text/xml"
 };
-http.createServer(function(request,response)
+http.createServer((request,response)=>
 {
     const urlPath=decodeURI(request.url);
     let contentType,pathName,queryString="",sliceIndex=urlPath.indexOf("?");
