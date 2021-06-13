@@ -64,15 +64,15 @@ http.createServer((request,response)=>
     finally
     {
         console.log("-".repeat(64));
-        console.log("URL Path:",'"'+urlPath+'"');
-        if(pathName!=urlPath)console.log("Path Name:",'"'+pathName+'"');
-        if(queryString)console.log("Query String:",'"'+queryString+'"');
-        if(contentType)console.log("Content-Type:",'"'+contentType+'"');
+        console.log("URL Path:",`"${urlPath}"`);
+        if(pathName!=urlPath)console.log("Path Name:",`"${pathName}"`);
+        if(queryString)console.log("Query String:",`"${queryString}"`);
+        if(contentType)console.log("Content-Type:",`"${contentType}"`);
         console.log("Status Code:",response.statusCode);
-        console.log("Status Message:",'"'+response.statusMessage+'"');
+        console.log("Status Message:",`"${response.statusMessage}"`);
     }
 }).listen(port,()=>
 {
-    console.log("Origin:",port==80?"http://localhost/":"http://localhost:"+port+"/");
+    console.log("Origin:",port==80?"http://localhost/":`http://localhost:${port}/`);
     console.log("Root Path:",'"'+rootPath+'"');
 });
