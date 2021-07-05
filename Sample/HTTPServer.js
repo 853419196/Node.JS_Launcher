@@ -73,5 +73,5 @@ http.createServer((request,response)=>
 }).listen(port,()=>
 {
     console.log("Origin:",port==80?"http://localhost/":`http://localhost:${port}/`);
-    console.log("Root Path:",'"'+rootPath+'"');
+    console.log("Root Path:",`"${rootPath}"`);
 });
