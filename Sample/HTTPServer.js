@@ -45,14 +45,13 @@ http.createServer((request,response)=>
             }
             if((appendPath=appendPaths.find(appendPath=>fs.statSync(path.join(basePath,appendPath)).isFile()))!=null)
             {
-                throws=null;
                 pathName=path.posix.join(pathName,appendPath);
                 contentType=mimeTypes[path.extname(pathName).toLowerCase()]||defaultMIMEType;
                 if(contentType)response.setHeader("Content-Type",contentType);
                 response.writeHead(200,http.STATUS_CODES["200"]);
                 fs.createReadStream(path.join(rootPath,pathName)).pipe(response);
             }
-            if(throws!=null)throw throws;
+            else throw throws;
         }
     }
     catch(error)
