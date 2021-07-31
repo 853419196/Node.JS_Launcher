@@ -24,7 +24,8 @@ const mimeTypes=
 http.createServer((message,response)=>
 {
     const urlPath=decodeURI(message.url);
-    let contentType,pathName,queryString="",searchIndex=urlPath.indexOf("?");
+    const searchIndex=urlPath.indexOf("?");
+    let contentType,pathName,queryString="";
     if(searchIndex<0)pathName=path.posix.resolve(path.posix.sep,decodeURIComponent(urlPath));
     else
     {
