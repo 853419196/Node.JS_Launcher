@@ -17,8 +17,8 @@ const mimeTypes=
     ".pdf":"application/pdf",
     ".svg":"image/svg+xml",
     ".txt":"text/plain",
-    ".wasm":"application/wasm",
     ".vtt":"text/vtt",
+    ".wasm":"application/wasm",
     ".xml":"text/xml"
 };
 http.createServer((message,response)=>
