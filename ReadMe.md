@@ -12,4 +12,4 @@ https://nodejs.org/download/release/latest-v13.x/
 
 Node.JS for Windows 10 (x86) Last Version: Node.JS 17.
 
-https://nodejs.org/download/release/latest-v17.x/
+https://nodejs.org/download/release/latest-v17.x/win-x86/
