@@ -62,6 +62,7 @@ http.createServer((message,response)=>
     }
     finally
     {
+        console.log("-".repeat(64));
         console.log("Method:",`"${message.method}"`);
         console.log("URL Path:",`"${urlPath}"`);
         if(pathName!=urlPath)console.log("Path Name:",`"${pathName}"`);
