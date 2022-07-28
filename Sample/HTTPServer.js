@@ -62,7 +62,6 @@ http.createServer((message,response)=>
     }
     finally
     {
-        console.log("-".repeat(64));
         console.log("Method:",`"${message.method}"`);
         console.log("URL Path:",`"${urlPath}"`);
         if(pathName!=urlPath)console.log("Path Name:",`"${pathName}"`);
@@ -74,9 +73,11 @@ http.createServer((message,response)=>
             console.log("Status Message:",`"${response.statusMessage}"`);
             if(contentType=response.getHeader("Content-Type"))console.log("Content-Type:",`"${contentType}"`);
         }
+        console.log("-".repeat(64));
     }
 }).listen(port,()=>
 {
     console.log("Origin:",port==80?"http://localhost/":`http://localhost:${port}/`);
     console.log("Root Path:",`"${rootPath}"`);
+    console.log("-".repeat(64));
 });
