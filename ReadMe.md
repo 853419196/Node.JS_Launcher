@@ -10,6 +10,6 @@ Node.JS for Windows 7 Last Version: Node.JS 13.
 
 https://nodejs.org/download/release/latest-v13.x/
 
-Node.JS for Windows 10 (32 Bit) Last Version: Node.JS 5.
+Node.JS for Windows 10 (32 Bit) Last Version: Node.JS 22.
 
 https://nodejs.org/download/release/latest-v22.x/win-x86/
