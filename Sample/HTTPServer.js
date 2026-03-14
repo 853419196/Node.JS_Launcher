@@ -23,17 +23,17 @@ const mimeTypes=
 };
 http.createServer((message,response)=>
 {
-    const urlPath=decodeURI(message.url);
     const searchIndex=message.url.indexOf("?");
-    let contentType,pathName,queryString="";
-    if(searchIndex<0)pathName=path.posix.resolve(path.posix.sep,decodeURIComponent(message.url));
-    else
+    let contentType,pathName=message.url,queryString="",urlPath=message.url;
+    if(searchIndex>=0)
     {
         queryString=message.url.slice(searchIndex+1);
-        pathName=path.posix.resolve(path.posix.sep,decodeURIComponent(message.url.slice(0,searchIndex)));
+        pathName=message.url.slice(0,searchIndex);
     }
     try
     {
+        urlPath=decodeURI(urlPath);
+        pathName=path.posix.resolve(path.posix.sep,decodeURIComponent(pathName));
         const basePath=path.join(rootPath,pathName);
         if(!fs.existsSync(basePath))throw false;
         else
