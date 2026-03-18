@@ -5,7 +5,8 @@ const path=require("path");
 const indexFiles=["index.htm","index.html"];
 const port=+process.argv[2]||+process.argv[3]||80;
 const defaultMIMEType="";//"application/octet-stream";
-const rootPath=path.resolve(path.join((+process.argv[2]?process.argv[3]:process.argv[2])||".",path.sep));
+const pathSeparator=process.platform=="win32"?/\\/g:/\//g;
+const rootPath=path.join(path.resolve((+process.argv[2]?process.argv[3]:process.argv[2])||"."),path.sep);
 const mimeTypes=
 {
     ".css":"text/css",
@@ -33,7 +34,7 @@ http.createServer((message,response)=>
     try
     {
         urlPath=decodeURI(urlPath);
-        pathName=path.posix.resolve(path.posix.sep,decodeURIComponent(pathName));
+        pathName=path.join(path.sep,decodeURIComponent(pathName)).replace(pathSeparator,path.posix.sep);
         const basePath=path.join(rootPath,pathName);
         if(!fs.existsSync(basePath))throw false;
         else
