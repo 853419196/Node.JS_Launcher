@@ -10,7 +10,6 @@ const rootPath=path.join(path.resolve((+process.argv[2]?process.argv[3]:process.
 const mimeTypes=
 {
     ".css":"text/css",
-    ".csv":"text/csv",
     ".htm":"text/html",
     ".html":"text/html",
     ".js":"text/javascript",
@@ -20,6 +19,8 @@ const mimeTypes=
     ".txt":"text/plain",
     ".vtt":"text/vtt",
     ".wasm":"application/wasm",
+    ".xht":"application/xhtml+xml",
+    ".xhtml":"application/xhtml+xml",
     ".xml":"text/xml"
 };
 http.createServer((message,response)=>
